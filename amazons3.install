@@ -40,9 +40,6 @@ function amazons3_uninstall() {
   variable_del('amazons3_torrents');
   variable_del('amazons3_presigned_urls');
   variable_del('amazons3_saveas');
-  variable_del('amazons3_rrs');
-  variable_del('amazons3_https');
-  variable_del('amazons3_hostname');
 }
 
 /**
@@ -62,8 +59,6 @@ function amazons3_schema() {
       'filesize' => array(
         'description' => 'The size of the file in bytes.',
         'type' => 'int',
-        'size' => 'big',
-        'length' => 14,
         'unsigned' => TRUE,
         'not null' => TRUE,
         'default' => 0,
@@ -106,7 +101,7 @@ function amazons3_schema() {
 }
 
 /**
- * Install the caching table.
+ * Install the caching table
  */
 function amazons3_update_7100($sandbox) {
   $schema['amazons3_file'] = array(
@@ -162,9 +157,6 @@ function amazons3_update_7100($sandbox) {
   db_create_table('amazons3_file', $schema['amazons3_file']);
 }
 
-/**
- * Change uid to a varchar.
- */
 function amazons3_update_7101(&$sandbox) {
   $spec = array(
     'description' => 'The uid of the user who is associated with the file (not Drupal uid).',
@@ -176,19 +168,3 @@ function amazons3_update_7101(&$sandbox) {
   db_change_field('amazons3_file', 'uid', 'uid', $spec);
 }
 
-
-/**
- * Update the filesize column to use a bigint, to allow TB filesizes.
- */
-function amazons3_update_7102(&$sandbox) {
-  $spec = array(
-    'description' => 'The size of the file in bytes.',
-    'type' => 'int',
-    'size' => 'big',
-    'length' => 14,
-    'unsigned' => TRUE,
-    'not null' => TRUE,
-    'default' => 0,
-  );
-  db_change_field('amazons3_file', 'filesize', 'filesize', $spec);
-}
